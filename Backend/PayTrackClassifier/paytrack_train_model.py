@@ -11,6 +11,7 @@ import time
 import logging
 from logging.handlers import TimedRotatingFileHandler
 from datetime import datetime
+import os
 
 def db_connection():
     # Database connection parameters
@@ -40,13 +41,20 @@ def load_data_from_db():
     connection.close()
     return data
 
+# Get the current directory
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Create the ML_Log folder if it doesn't exist
+log_folder = os.path.join(current_dir, 'ML_Train_Log')
+os.makedirs(log_folder, exist_ok=True)
+
 # Configure logging
-log_file = 'ML_Train_Log/training.log'
+log_file = os.path.join(log_folder, "traning.log")
+logging.basicConfig(level=logging.INFO)
 handler = TimedRotatingFileHandler(log_file, when="midnight", backupCount=30)
 formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
 handler.setFormatter(formatter)
 logging.getLogger('').addHandler(handler)
-logging.getLogger('').setLevel(logging.INFO)
 
 # Step 8: Expose API using Flask
 app = Flask(__name__)
