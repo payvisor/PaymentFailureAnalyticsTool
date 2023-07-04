@@ -1,0 +1,17 @@
+sudo /usr/share/logstash/bin/system-install /etc/logstash/startup.options sysv
+sudo chkconfig --add logstash
+
+sudo /usr/share/logstash/bin/logstash -f /etc/logstash/conf.d/payvisor.conf
+
+sudo service logstash start
+sudo service logstash status
+sudo service logstash stop
+
+
+sudo chgrp logstash /var/log/*
+sudo chmod 777 /var/log/*
+
+
+/usr/share/logstash/output
+/usr/share/logstash/data/plugins/inputs
+/etc/logstash/conf.d

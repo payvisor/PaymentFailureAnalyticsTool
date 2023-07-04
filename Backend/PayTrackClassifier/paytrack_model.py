@@ -5,7 +5,7 @@ from sklearn.model_selection import train_test_split
 import joblib
 
 # Step 1: Data loading
-data = pd.read_csv('../train/train_sets_tags_buckets_reasons_v1.csv')
+data = pd.read_csv('../train/training-data-buckets-tags-failurereasons.csv')
 
 # Step 2: Data preprocessing
 # Assuming no additional preprocessing is required
@@ -13,7 +13,7 @@ data = pd.read_csv('../train/train_sets_tags_buckets_reasons_v1.csv')
 # Step 3: Feature engineering
 vectorizer = TfidfVectorizer()
 X = vectorizer.fit_transform(data['failureReason'] + ' ' + data['tags'])
-y = data['BucketName']
+y = data['bucketName']
 
 # Save the vectorizer
 joblib.dump(vectorizer, 'vectorizer.pkl')

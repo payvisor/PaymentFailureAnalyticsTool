@@ -8,6 +8,9 @@ from flask import Flask, request
 import pymysql
 import schedule
 import time
+import logging
+from logging.handlers import TimedRotatingFileHandler
+from datetime import datetime
 
 def db_connection():
     # Database connection parameters
@@ -32,11 +35,18 @@ def db_connection():
 def load_data_from_db():
     # Database connection and query execution
     connection = db_connection()
-    query = "SELECT distinct p.failureReason as failureReason, p.BucketName as BucketName, b.tags as tags FROM PaymentFailuresData p inner join BucketsData b on p.BucketName=b.BucketName;"
+    query = "select tml.failureReason,b.bucketName,b.tags from TrainMLFailureBucketsData tml right join BucketsData b on tml.BucketName=b.BucketName order by b.bucketName"
     data = pd.read_sql(query, connection)
-    print(data)
     connection.close()
     return data
+
+# Configure logging
+log_file = 'ML_Train_Log/training.log'
+handler = TimedRotatingFileHandler(log_file, when="midnight", backupCount=30)
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+logging.getLogger('').addHandler(handler)
+logging.getLogger('').setLevel(logging.INFO)
 
 # Step 8: Expose API using Flask
 app = Flask(__name__)
@@ -46,8 +56,12 @@ def train_model():
     # Step 2: Feature engineering
     vectorizer = TfidfVectorizer()
     data = load_data_from_db()
+
+    # Preprocess data to replace np.nan values with empty string
+    data.fillna('', inplace=True)
+
     X = vectorizer.fit_transform(data['failureReason'] + ' ' + data['tags'])
-    y = data['BucketName']
+    y = data['bucketName']
 
     # Save the vectorizer
     joblib.dump(vectorizer, 'vectorizer.pkl')
@@ -61,22 +75,26 @@ def train_model():
 
     # Step 5: Model evaluation
     accuracy = model.score(X_test, y_test)
-    print("Accuracy:", accuracy)
+    logging.info("Accuracy: %s", accuracy)
 
     # Step 6: Save the trained model
     joblib.dump(model, 'paytrack_model.pkl')
+    logging.info("Model trained successfully!")
 
     return "Model trained successfully!"
 
 def train_model_periodically():
-    print("Training model...")
+    logging.info("Training model...")
     train_model()
 
-def main(minutes):
-    # If minutes is provided, schedule the job
-    if minutes is not None:
-        # Schedule the job to run every specified minutes
-        schedule.every(minutes).minutes.do(train_model_periodically)
+def main(hours):
+    # If hours is provided, schedule the job
+    if hours is not None:
+        # Run the application to expose the API
+        app.run(port=7777)
+        # Schedule the job to run every specified hours
+        logging.info("Scheduler setup completed for every " + str(hours) + " hours")
+        schedule.every(hours).hours.do(train_model_periodically)
         while True:
             schedule.run_pending()
             time.sleep(1)
@@ -86,7 +104,7 @@ def main(minutes):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--minutes', type=int, default=None, help='Number of minutes between model training')
+    parser.add_argument('--hours', type=int, default=None, help='Number of hours between model training')
     args = parser.parse_args()
 
-    main(args.minutes)
+    main(args.hours)
