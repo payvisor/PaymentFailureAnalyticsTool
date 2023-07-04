@@ -49,7 +49,7 @@ log_folder = os.path.join(current_dir, 'ML_Train_Log')
 os.makedirs(log_folder, exist_ok=True)
 
 # Configure logging
-log_file = os.path.join(log_folder, "traning.log")
+log_file = os.path.join(log_folder, "training.log")
 logging.basicConfig(level=logging.INFO)
 handler = TimedRotatingFileHandler(log_file, when="midnight", backupCount=30)
 formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
