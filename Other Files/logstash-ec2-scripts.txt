@@ -11,7 +11,22 @@ sudo service logstash stop
 sudo chgrp logstash /var/log/*
 sudo chmod 777 /var/log/*
 
+sudo chgrp logstash /usr/share/logstash/data/plugins/inputs/*
+sudo chmod 777 /usr/share/logstash/data/plugins/inputs/*
+
 
 /usr/share/logstash/output
 /usr/share/logstash/data/plugins/inputs
 /etc/logstash/conf.d
+
+Logstash IPs :-
+
+ec2-15-207-18-83.ap-south-1.compute.amazonaws.com
+15.207.18.83
+
+Command to edit a file in terminal :-
+
+echo '<Insert text here>' | sudo tee /etc/yum.repos.d/logstash.repo
+
+cd /usr/share/logstash/output
+tail -f 

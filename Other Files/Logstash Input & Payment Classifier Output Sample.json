@@ -1,0 +1,58 @@
+Send by Logstash to Payment Classifier :-
+
+{
+    "amount": "0",
+    "failureReason": "String",
+    "transactionDateTime": "Date",
+    "@timestamp": "Date", //Unnecessary field. Remove in Payment Classifier before calling addAndNotify API
+    "input_type": "String" //Unnecessary field. Remove in Payment Classifier before calling addAndNotify API
+}
+
+or
+
+{
+    "transactionID": "String",
+    "amount": "0",
+    "failureReason": "String",
+    "transactionDateTime": "Date",
+    "@timestamp": "Date", //Unnecessary field. Remove in Payment Classifier before calling addAndNotify API
+    "input_type": "String" //Unnecessary field. Remove in Payment Classifier before calling addAndNotify API
+}
+
+or
+
+{
+    "transactionID": "String",
+    "firstName": "String",
+    "lastName": "String",
+    "emailID": "String",
+    "country": "String",
+    "amount": Float,
+    "currency": "String",
+    "paymentMethod": "String",
+    "paymentLocation": "String",
+    "transactionStatus": "String",
+    "failureReason": "String",
+    "transactionDateTime": "Date",
+    "@timestamp": "Date", //Unnecessary field. Remove in Payment Classifier before calling addAndNotify API
+    "input_type": "String" //Unnecessary field. Remove in Payment Classifier before calling addAndNotify API
+}
+
+JSON Data to be posted to addAndNotify API :-
+
+{
+    "transactionID": "String",
+    "firstName": "String",
+    "lastName": "String",
+    "emailID": "String",
+    "country": "String",
+    "amount": Float,
+    "currency": "String",
+    "paymentMethod": "String",
+    "paymentLocation": "String",
+    "transactionStatus": "String",
+    "failureReason": "String",
+    "bucketName":"String" //Predict using ML Model and add in Payment Classifier before calling addAndNotify API
+    "transactionDateTime": "Date",
+    "timestamp":"Date", // Current System time add in Payment Classifier before calling addAndNotify API
+}

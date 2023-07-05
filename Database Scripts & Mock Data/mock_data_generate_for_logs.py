@@ -20,7 +20,7 @@ buckets = {
     "Card not activated",
     "Incorrect card type selected"
     ],
-    'Authorization & Account Issues' : [
+    'Authorization and Account Issues' : [
     "Insufficient funds",
     "Bank authorization failed",
     "Account frozen",
@@ -60,7 +60,7 @@ buckets = {
     "Payment gateway security breach",
     "Payment gateway capacity reached",
     "Payment gateway configuration issue"],
-    'Fraud & Security Issues' : [
+    'Fraud and Security Issues' : [
     "PaymentDeclinedByIssuerException",
     "Suspicious activity detected",
     "Cardholder authentication required",
@@ -70,7 +70,7 @@ buckets = {
     "Payment declined by third-party fraud system",
     "Cardholders bank flagged transaction as fraudulent",
     "Payment security violation"],
-    'Communication & Connection Issues' : [
+    'Communication and Connection Issues' : [
     "Payment timeout",
     "Server error",
     "Payment processor downtime",
@@ -86,22 +86,21 @@ buckets = {
     "PaymentValidationException",
     "PaymentVerificationFailureException",
     "Incompatible payment method",
+    "Currency conversion error",
     "Payment method expired",
     "Invalid API credentials",
     "Incorrect payment method selected",
     "Payment method not accepted",
     "Payment source expired",
     "Payment method revoked"],
-    'Currency & Conversion Issues' : [
-    "Invalid currency",
-    "Currency conversion error"],
-    'Data & Information Issues' : [
+    'Data and Information Issues' : [
     "Invalid billing address",
     "Invalid expiration date",
     "Invalid security code",
     "Incorrectly formatted payment data",
     "Incorrect billing information",
     "Invalid account holder name",
+    "Invalid currency",
     "Invalid check digit",
     "Invalid merchant category code"],
     'Miscellaneous Issues' : [
